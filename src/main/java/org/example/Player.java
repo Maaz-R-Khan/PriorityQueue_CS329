@@ -56,11 +56,11 @@ public class Player {
     /** The equals method returns a value based on the values. If the names are equal, then it returns true. **/
     @Override
     public boolean equals(Object o) {
-        Player p = (Player) o;
-        if(this.name.equals(p.name)) {
-            return true;
+        if (!(o instanceof Player)) { // ✅ Check if o is a Player
+            return false;
         }
-        return false;
+        Player p = (Player) o;
+        return this.name.equals(p.name);
     }
 
 

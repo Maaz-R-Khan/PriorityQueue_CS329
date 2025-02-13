@@ -56,13 +56,16 @@ public class PQList implements PriorityQueue{
     public void add(Player a) {
         Node newNode = new Node(a);
 
+        //If the queue is empty, then set the new node as both tail and head.
         if(tail == null) {
-            head = tail = newNode;
+            head = newNode;
+            tail = newNode;
         } else {
             tail.next = newNode;
             tail = newNode;
         }
         length++;
+        System.out.println("Current queue size: " + length);
     }
 
 
@@ -73,10 +76,10 @@ public class PQList implements PriorityQueue{
             priority = null;
             return;
         }
+        priority = head;
+       int highScore = head.data.getScore();
+        Node current = head.next;
 
-       int highScore = 0;
-        Node current = head;
-        priority = null;
         /**
          * Traverse through the linked list, and if the current Node's data
          * is greater than the highScore, set the highScore to the current Node's data
@@ -102,14 +105,13 @@ public class PQList implements PriorityQueue{
         Player highestScorePlayer = priority.data;
 
         if(priority == head) {
-            head = head.next;
-            if(head == null) {
+            if (head == tail) { // If only one element, reset tail too
                 tail = null;
             }
+            head = head.next;
             length--;
             return highestScorePlayer;
         }
-
         while (current.next != null && current.next != priority) {
             current = current.next;
         }
@@ -118,20 +120,12 @@ public class PQList implements PriorityQueue{
         if (current.next == priority) {
             current.next = priority.next; // Remove the node
             if (priority == tail) {
-                tail = current; // Update tail if we removed the last node
+                tail = current; // Update tail if the last node was removed.
             }
         }
 
         length--;
         return highestScorePlayer;
-
-//        while (current != null) {
-//            if(current.next == priority) {
-//                current.next = priority.next;
-//                return priority.data;
-//            }
-//        }
-        //return null;
     }
 
     @Override
